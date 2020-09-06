@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { List, ListItemText, ListItem, ListItemAvatar, Modal, Button } from '@material-ui/core'
+import { List, ListItemText, ListItem, ListItemAvatar, Modal, Button, FormControl, InputLabel, Input } from '@material-ui/core'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import './Todo.css';
 import db from './firebase';
@@ -35,6 +35,7 @@ function Todo(props) {
         }, {merge: true})
 
         setOpen(false);
+        setInput('');
     }
 
     return (
@@ -44,8 +45,12 @@ function Todo(props) {
         onClose={e => setOpen(false)}>
             <div className={classes.paper}>
                 <h1>I'm a Modal</h1>
-                <input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)} />
-                <Button onClick={updateTodo} >Update Todo</Button>
+                <FormControl>
+                    <InputLabel>Edit a Todo</InputLabel>
+                    <Input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)} />
+                </FormControl>
+                {/* <input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)} /> */}
+                <Button onClick={updateTodo} variant="contained" color="primary" >Update Todo</Button>
             </div>
         </Modal>
         <List className="todo__list">
@@ -53,7 +58,8 @@ function Todo(props) {
                 <ListItemAvatar></ListItemAvatar>
                 <ListItemText primary={props.todo.todo} secondary="Dummy deadline" />
             </ListItem>
-            <button onClick={e => setOpen(true)}>Edit</button>
+            
+            <Button onClick={e => setOpen(true)} variant="contained" color="primary" >Edit</Button>
             <Button>
             <DeleteForeverIcon onClick={event => db.collection('todos').doc(props.todo.id).delete()} />
             </Button>
