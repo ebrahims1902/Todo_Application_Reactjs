@@ -27,9 +27,9 @@ function Todo(props) {
         setOpen(true);
     }
 
-    const updateTodo = () => {
+    const updateTodo = (event) => {
         // update todo with the new input text
-
+        event.preventDefault(); 
         db.collection('todos').doc(props.todo.id).set({
             todo: input
         }, {merge: true})
@@ -44,13 +44,13 @@ function Todo(props) {
         open={open}
         onClose={e => setOpen(false)}>
             <div className={classes.paper}>
-                <h1>I'm a Modal</h1>
+                <h1>You can edit your text</h1>
                 <FormControl>
-                    <InputLabel>Edit a Todo</InputLabel>
+                    <InputLabel>WRITE HERE</InputLabel>
                     <Input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)} />
                 </FormControl>
                 {/* <input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)} /> */}
-                <Button onClick={updateTodo} variant="contained" color="primary" >Update Todo</Button>
+                <Button disabled={!input}  onClick={updateTodo} variant="contained" color="primary" >Update Todo</Button>
             </div>
         </Modal>
         <List className="todo__list">
@@ -60,8 +60,8 @@ function Todo(props) {
             </ListItem>
             
             <Button onClick={e => setOpen(true)} variant="contained" color="primary" >Edit</Button>
-            <Button>
-            <DeleteForeverIcon onClick={event => db.collection('todos').doc(props.todo.id).delete()} />
+            <Button >
+                <DeleteForeverIcon color="secondary" onClick={event => db.collection('todos').doc(props.todo.id).delete()} />
             </Button>
         </List>
         </>
